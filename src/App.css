@@ -1,5 +1,4 @@
-/* Ana div'in tüm ekranı kaplamasını sağla ve flexbox ile dikey hizala */
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+/* Genel düzenler ve tipografi ayarları */
 body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
@@ -8,6 +7,7 @@ body {
 }
 .App {
   display: flex;
+  flex-wrap: wrap; /* Tüm ekranlarda satır satır renkleri sığdır */
   height: 100vh; /* Tüm yüksekliği kaplar */
   margin: 0;
   padding: 0;
@@ -24,6 +24,7 @@ body {
   font-weight: bold;
   flex-direction: column;
   position: relative; /* Pseudo-elementlerin konumlanması için gerekli */
+  height: 100%; /* Ekran yüksekliğini kaplar */
 }
 
 .section::before {
@@ -95,4 +96,44 @@ body {
   position: absolute;
   bottom: 0;
   margin-bottom: 50px;
+}
+
+/* Mobil ve tablet görünüm için media query */
+@media (max-width: 768px) {
+  .App {
+    flex-wrap: wrap;
+    height: auto; /* İçeriğe göre yükseklik ayarla */
+  }
+
+  .section {
+    flex: 0 0 100%; /* Her satıra tam genişlik */
+    height: calc(100vh / 6); /* Her renk kutusu ekranın üçte birini kaplasın */
+    display: flex;
+    justify-content: center;
+  }
+
+  .parts {
+    left: 0;
+    margin-left: 40px;
+  }
+
+  .mybuttons {
+    width: 60px; /* Buton genişliğini küçült */
+  }
+
+  .text {
+    font-size: 14px; /* Mobil görünümde yazıyı küçült */
+  }
+
+  .buttons {
+    font-size: 16px;
+    width: 30px; /* Buton genişliğini ayarla */
+    height: 30px;
+    padding: 5px; /* Mobilde daha küçük butonlar */
+  }
+
+  /* Yalnızca ilk 3 rengi göster */
+  .section:nth-child(n + 7) {
+    display: none;
+  }
 }

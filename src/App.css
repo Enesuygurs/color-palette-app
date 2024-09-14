@@ -1,0 +1,98 @@
+/* Ana div'in tüm ekranı kaplamasını sağla ve flexbox ile dikey hizala */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+.App {
+  display: flex;
+  height: 100vh; /* Tüm yüksekliği kaplar */
+  margin: 0;
+  padding: 0;
+}
+
+/* Her bir bölümün tüm genişliği kaplamasını ve ortalanmasını sağla */
+.section {
+  flex: 1; /* Her bölüm eşit yer kaplar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  flex-direction: column;
+  position: relative; /* Pseudo-elementlerin konumlanması için gerekli */
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Arka planın koyulaştırılması için */
+  transition: opacity 0.5s ease; /* Geçiş efekti */
+  opacity: 0; /* Başlangıçta görünmez */
+  z-index: 0; /* Yazının altında kalmasını sağlar */
+}
+
+.section:hover::before {
+  opacity: 1; /* Hover durumunda görünür */
+}
+
+.text {
+  cursor: copy;
+  position: relative; /* Yazının üstte görünmesini sağlar */
+  z-index: 1; /* Arka plan katmanının üzerinde görünmesini sağlar */
+}
+
+.text:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.buttons {
+  cursor: pointer;
+  font-size: 20px;
+  width: 20px;
+  height: 22px;
+  padding: 6px;
+  border-radius: 50%;
+}
+
+.buttons:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.notification {
+  position: absolute;
+  top: 5%; /* Üstten 5% uzaklıkta */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff; /* Beyaz arka plan */
+  color: #000000; /* Siyah metin rengi */
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  visibility: hidden; /* Başlangıçta görünmez */
+  opacity: 0;
+  transition: opacity 0.5s ease, visibility 0.5s ease; /* Yumuşak geçiş efekti */
+}
+
+.notification.show {
+  visibility: visible; /* Görünür */
+  opacity: 1;
+}
+
+.mybuttons {
+  display: flex;
+  width: 155px;
+}
+
+.parts {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 50px;
+}

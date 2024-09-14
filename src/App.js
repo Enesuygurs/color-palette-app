@@ -4,6 +4,7 @@ import { FaLock } from "react-icons/fa";
 import { IoIosRemoveCircle } from "react-icons/io";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { FaUnlock } from "react-icons/fa6";
+import { RiColorFilterFill } from "react-icons/ri";
 function App() {
   const [colors, setColors] = useState(Array(6).fill(""));
   const [notification, setNotification] = useState("");
@@ -165,44 +166,62 @@ function App() {
   };
   return (
     <div className="App">
-      {colors.map((color, indexim) => (
-        <div
-          key={indexim}
-          className="section"
-          style={{
-            backgroundColor: checkColorIsSaved(indexim) ? changedColor : color,
-          }}
-        >
-          <div className="parts">
-            <div className="mybuttons">
-              {checkColorIsSaved(indexim) ? (
-                <div className="buttons" onClick={() => removeSavedColor(indexim)}>
-                  <FaUnlock />
-                </div>
-              ) : (
-                <div className="buttons" onClick={() => saveColor(indexim, color)}>
-                  <FaLock />
-                </div>
-              )}
-              <div className="buttons" onClick={() => createSimilarColor(checkColorIsSaved(indexim) ? changedColor : color)}>
-                <IoAddCircleSharp />
-              </div>
-              <div className="buttons" onClick={() => removeSection(indexim)}>
-                <IoIosRemoveCircle />
-              </div>
-            </div>
+      <div className="header">
+        <ul>
+          <li>
+            <a href="#home">Home</a>
+          </li>
+          <li className="navbarButton">
+            <RiColorFilterFill />
+          </li>
+          <li>
+            <a href="#news">News</a>
+          </li>
+        </ul>
+      </div>
 
-            <div className="colorcodes">
-              <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? changedColor : color)}>
-                {checkColorIsSaved(indexim) ? changedColor : color}
+      {/* Section'ları bir container içine alıyoruz */}
+      <div className="sections-container">
+        {colors.map((color, indexim) => (
+          <div
+            key={indexim}
+            className="section"
+            style={{
+              backgroundColor: checkColorIsSaved(indexim) ? changedColor : color,
+            }}
+          >
+            <div className="parts">
+              <div className="mybuttons">
+                {checkColorIsSaved(indexim) ? (
+                  <div className="buttons" onClick={() => removeSavedColor(indexim)}>
+                    <FaUnlock />
+                  </div>
+                ) : (
+                  <div className="buttons" onClick={() => saveColor(indexim, color)}>
+                    <FaLock />
+                  </div>
+                )}
+                <div className="buttons" onClick={() => createSimilarColor(checkColorIsSaved(indexim) ? changedColor : color)}>
+                  <IoAddCircleSharp />
+                </div>
+                <div className="buttons" onClick={() => removeSection(indexim)}>
+                  <IoIosRemoveCircle />
+                </div>
               </div>
-              <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color))}>
-                {checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color)}
+
+              <div className="colorcodes">
+                <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? changedColor : color)}>
+                  {checkColorIsSaved(indexim) ? changedColor : color}
+                </div>
+                <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color))}>
+                  {checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color)}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
       {notification && <div className={`notification ${notification ? "show" : ""}`}>{notification}</div>}
     </div>
   );

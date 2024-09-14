@@ -79,7 +79,6 @@ function App() {
 
     // Save the updated colors array back to localStorage
     localStorage.setItem("savedColors", JSON.stringify(savedColors));
-
     // Notify user and update UI
     setNotification(`Color saved.`);
     setTimeout(() => {

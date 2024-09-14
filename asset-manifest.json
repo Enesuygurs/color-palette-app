@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/color-palette-app/static/css/main.bd96f3bc.css",
+    "main.js": "/color-palette-app/static/js/main.3c0a2177.js",
+    "static/js/453.218cd3e6.chunk.js": "/color-palette-app/static/js/453.218cd3e6.chunk.js",
+    "index.html": "/color-palette-app/index.html",
+    "main.bd96f3bc.css.map": "/color-palette-app/static/css/main.bd96f3bc.css.map",
+    "main.3c0a2177.js.map": "/color-palette-app/static/js/main.3c0a2177.js.map",
+    "453.218cd3e6.chunk.js.map": "/color-palette-app/static/js/453.218cd3e6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bd96f3bc.css",
+    "static/js/main.3c0a2177.js"
+  ]
+}

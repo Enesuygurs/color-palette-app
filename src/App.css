@@ -1,4 +1,3 @@
-/* Genel düzenler ve tipografi ayarları */
 body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
@@ -7,15 +6,14 @@ body {
 }
 .App {
   display: flex;
-  flex-wrap: wrap; /* Tüm ekranlarda satır satır renkleri sığdır */
-  height: 100vh; /* Tüm yüksekliği kaplar */
+  flex-wrap: wrap;
+  height: 100vh;
   margin: 0;
   padding: 0;
 }
 
-/* Her bir bölümün tüm genişliği kaplamasını ve ortalanmasını sağla */
 .section {
-  flex: 1; /* Her bölüm eşit yer kaplar */
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,8 +21,8 @@ body {
   font-size: 24px;
   font-weight: bold;
   flex-direction: column;
-  position: relative; /* Pseudo-elementlerin konumlanması için gerekli */
-  height: 100%; /* Ekran yüksekliğini kaplar */
+  position: relative;
+  height: 100%;
 }
 
 .section::before {
@@ -34,20 +32,20 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3); /* Arka planın koyulaştırılması için */
-  transition: opacity 0.5s ease; /* Geçiş efekti */
-  opacity: 0; /* Başlangıçta görünmez */
-  z-index: 0; /* Yazının altında kalmasını sağlar */
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  z-index: 0;
 }
 
 .section:hover::before {
-  opacity: 1; /* Hover durumunda görünür */
+  opacity: 1;
 }
 
 .text {
   cursor: copy;
-  position: relative; /* Yazının üstte görünmesini sağlar */
-  z-index: 1; /* Arka plan katmanının üzerinde görünmesini sağlar */
+  position: relative;
+  z-index: 1;
 }
 
 .text:hover {
@@ -69,21 +67,21 @@ body {
 
 .notification {
   position: absolute;
-  top: 5%; /* Üstten 5% uzaklıkta */
+  top: 5%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ffffff; /* Beyaz arka plan */
-  color: #000000; /* Siyah metin rengi */
+  background-color: #ffffff;
+  color: #000000;
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  visibility: hidden; /* Başlangıçta görünmez */
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease, visibility 0.5s ease; /* Yumuşak geçiş efekti */
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .notification.show {
-  visibility: visible; /* Görünür */
+  visibility: visible;
   opacity: 1;
 }
 
@@ -98,16 +96,15 @@ body {
   margin-bottom: 50px;
 }
 
-/* Mobil ve tablet görünüm için media query */
-@media (max-width: 768px) {
+@media (max-width: 1240px) {
   .App {
     flex-wrap: wrap;
-    height: auto; /* İçeriğe göre yükseklik ayarla */
+    height: auto;
   }
 
   .section {
-    flex: 0 0 100%; /* Her satıra tam genişlik */
-    height: calc(100vh / 6); /* Her renk kutusu ekranın üçte birini kaplasın */
+    flex: 0 0 100%;
+    height: calc(100vh / 6);
     display: flex;
     justify-content: center;
   }
@@ -115,24 +112,24 @@ body {
   .parts {
     left: 0;
     margin-left: 40px;
+    margin-bottom: 20px;
   }
 
   .mybuttons {
-    width: 60px; /* Buton genişliğini küçült */
+    width: 60px;
   }
 
   .text {
-    font-size: 14px; /* Mobil görünümde yazıyı küçült */
+    font-size: 14px;
   }
 
   .buttons {
     font-size: 16px;
-    width: 30px; /* Buton genişliğini ayarla */
+    width: 30px;
     height: 30px;
-    padding: 5px; /* Mobilde daha küçük butonlar */
+    padding: 5px;
   }
 
-  /* Yalnızca ilk 3 rengi göster */
   .section:nth-child(n + 7) {
     display: none;
   }

@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/color-palette-app/static/css/main.3a2d3cfe.css",
-    "main.js": "/color-palette-app/static/js/main.caddc16d.js",
+    "main.css": "/color-palette-app/static/css/main.9283e479.css",
+    "main.js": "/color-palette-app/static/js/main.581407e1.js",
     "static/js/453.218cd3e6.chunk.js": "/color-palette-app/static/js/453.218cd3e6.chunk.js",
     "index.html": "/color-palette-app/index.html",
-    "main.3a2d3cfe.css.map": "/color-palette-app/static/css/main.3a2d3cfe.css.map",
-    "main.caddc16d.js.map": "/color-palette-app/static/js/main.caddc16d.js.map",
+    "main.9283e479.css.map": "/color-palette-app/static/css/main.9283e479.css.map",
+    "main.581407e1.js.map": "/color-palette-app/static/js/main.581407e1.js.map",
     "453.218cd3e6.chunk.js.map": "/color-palette-app/static/js/453.218cd3e6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a2d3cfe.css",
-    "static/js/main.caddc16d.js"
+    "static/css/main.9283e479.css",
+    "static/js/main.581407e1.js"
   ]
 }

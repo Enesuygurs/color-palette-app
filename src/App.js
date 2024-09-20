@@ -61,32 +61,42 @@ function App() {
   }, []);
 
   const saveColor = (index, color) => {
-    // Retrieve existing saved colors from localStorage
+    // LocalStorage'daki mevcut kaydedilen renkleri al
     const savedColors = checkLocalStorage();
 
-    // Check if the color is already saved
+    // Eğer kaydedilmiş renk sayısı 6 veya daha fazlaysa, kaydetme işlemini durdur.
+    if (savedColors.length >= 6) {
+      setNotification(`You can save a maximum of 6 colors.`);
+      setTimeout(() => {
+        setNotification("");
+      }, 3000);
+      return;
+    }
+
+    // Renk zaten kaydedilmiş mi kontrol et
     const colorObject = savedColors.find((savedColor) => savedColor.id === index + 1);
 
     if (colorObject) {
-      // If the color is already saved, update it
+      // Eğer renk zaten kaydedilmişse, güncelle
       colorObject.color = color;
     } else {
-      // If the color is new, add it to the saved colors array
+      // Yeni bir renkse, kaydedilen renkler listesine ekle
       savedColors.push({
         id: index + 1,
         color: color,
       });
     }
 
-    // Save the updated colors array back to localStorage
+    // Güncellenen renkleri localStorage'a kaydet
     localStorage.setItem("savedColors", JSON.stringify(savedColors));
-    // Notify user and update UI
+
+    // Kullanıcıya bildirim göster ve UI'ı güncelle
     setNotification(`Color saved.`);
     setTimeout(() => {
       setNotification("");
     }, 3000);
 
-    // Update state to force re-render if necessary
+    // Ekranı güncellemek için durumu güncelle
     setColors([...colors]);
   };
 
@@ -107,7 +117,6 @@ function App() {
   let changedColor = "";
   function checkColorIsSaved(index) {
     const savedColors = checkLocalStorage();
-    console.log("savedColors BAKBKABKAKBAKBKAKBABAK:", savedColors);
     for (let indexs in savedColors) {
       if (savedColors[indexs].id === index + 1) {
         changedColor = savedColors[indexs].color;
@@ -116,18 +125,32 @@ function App() {
     }
     return false;
   }
+  const [forceUpdate] = useState(0);
 
   const removeSection = (index) => {
     if (colors.length === 1) {
-      setNotification(`This is last color.`);
+      setNotification(`This is the last color, it cannot be removed.`);
       setTimeout(() => {
         setNotification("");
       }, 3000);
       return;
     }
-    const newColors = [...colors];
-    newColors.splice(index, 1);
-    setColors(newColors);
+
+    // Yeni renkler listesini oluşturuyoruz
+    const newColors = colors.filter((_, idx) => idx !== index);
+
+    // Kaydedilmiş renkleri de güncellemek gerekiyor
+    let savedColors = checkLocalStorage();
+    savedColors = savedColors.filter((color) => color.id !== index + 1);
+
+    // Güncellenen renkleri localStorage'a kaydediyoruz
+    localStorage.setItem("savedColors", JSON.stringify(savedColors));
+
+    setColors(newColors); // State güncelleniyor
+    setNotification(`Color removed.`);
+    setTimeout(() => {
+      setNotification("");
+    }, 3000);
   };
 
   const createSimilarColor = (color) => {
@@ -184,23 +207,22 @@ function App() {
       <div className="sections-container">
         {colors.map((color, indexim) => (
           <div
-            key={indexim}
+            key={`${color}-${indexim}-${forceUpdate}`} // key'i de forceUpdate'e bağlı yaparak render tetiklenmesini sağlayabiliriz
             className="section"
-            style={{
-              backgroundColor: checkColorIsSaved(indexim) ? changedColor : color,
-            }}
+            style={{ backgroundColor: color }}
           >
             <div className="parts">
               <div className="mybuttons">
-                {checkColorIsSaved(indexim) ? (
-                  <div className="buttons" onClick={() => removeSavedColor(indexim)}>
-                    <FaUnlock />
-                  </div>
-                ) : (
-                  <div className="buttons" onClick={() => saveColor(indexim, color)}>
-                    <FaLock />
-                  </div>
-                )}
+                {indexim < 6 && // Eğer 7. veya 8. renkse kilit simgelerini gösterme
+                  (checkColorIsSaved(indexim) ? (
+                    <div className="buttons" onClick={() => removeSavedColor(indexim)}>
+                      <FaUnlock />
+                    </div>
+                  ) : (
+                    <div className="buttons" onClick={() => saveColor(indexim, color)}>
+                      <FaLock />
+                    </div>
+                  ))}
                 <div className="buttons" onClick={() => createSimilarColor(checkColorIsSaved(indexim) ? changedColor : color)}>
                   <IoAddCircleSharp />
                 </div>

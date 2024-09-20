@@ -32,7 +32,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.11);
   transition: opacity 0.5s ease;
   opacity: 0;
   z-index: 0;
@@ -41,11 +41,17 @@ body {
 .section:hover::before {
   opacity: 1;
 }
-
+.section:hover .mybuttons {
+  opacity: 1;
+}
 .text {
   cursor: copy;
   position: relative;
   z-index: 1;
+  padding: 4px;
+  width: max-content;
+  padding-right: 8px;
+  padding-left: 8px;
 }
 
 .text:hover {
@@ -55,10 +61,9 @@ body {
 .buttons {
   cursor: pointer;
   font-size: 20px;
-  width: 20px;
   height: 22px;
   padding: 6px;
-  border-radius: 50%;
+  border-radius: 20%;
 }
 
 .buttons:hover {
@@ -88,7 +93,11 @@ body {
 .mybuttons {
   display: flex;
   width: 155px;
+  opacity: 0;
+  transition: opacity 0.3s ease; /* Görünme geçişi efekti */
+  margin-bottom: 2px;
 }
+
 .header {
   width: 100%;
   background-color: #e7e7e7;
@@ -100,7 +109,6 @@ body {
     bottom: 0;
     margin-bottom: 40px;
   }
-
   .sections-container {
     width: 100%;
     display: inline-flex;
@@ -110,19 +118,32 @@ body {
     top: 0;
   }
 }
+@media (min-width: 1240px) and (max-width: 1600px) {
+  .text {
+    font-size: 16px;
+  }
+  .buttons {
+    font-size: 17px;
+    height: 17px;
+  }
+}
+
 @media (max-width: 1240px) {
   .App {
     flex-wrap: wrap;
     height: auto;
   }
+
   .header {
     position: inherit;
     top: 0;
   }
+
   .sections-container {
     width: 100%;
     display: block;
   }
+
   .section {
     flex: 0 0 100%;
     height: calc(100vh / 6);
@@ -146,9 +167,7 @@ body {
 
   .buttons {
     font-size: 16px;
-    width: 30px;
-    height: 30px;
-    padding: 5px;
+    height: 16px;
   }
 
   /* .section:nth-child(n + 9) {
@@ -181,9 +200,13 @@ body {
 
 .header a:hover {
   background-color: #d3d3d3;
+  color: #525252;
 }
 .navbarButton {
   margin: 12px;
   color: #464646;
   font-size: 28px;
+}
+.navbarButton:hover {
+  color: #2c2c2c;
 }

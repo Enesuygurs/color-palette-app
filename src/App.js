@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
-import "./App.css"; // CSS dosyasını içe aktar
+import "./App.css";
 import { FaLock } from "react-icons/fa";
 import { IoIosRemoveCircle } from "react-icons/io";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { FaUnlock } from "react-icons/fa6";
 import { RiColorFilterFill } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
+import { HexColorPicker } from "react-colorful";
+import { FaPalette } from "react-icons/fa"; // Renk seçici için ikon
+
 function App() {
   const [colors, setColors] = useState(Array(6).fill(""));
   const [notification, setNotification] = useState("");
-
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [selectedColorIndex, setSelectedColorIndex] = useState(null);
+  const [pickerPosition, setPickerPosition] = useState({ top: 0, left: 0 });
   const generateRandomColor = () => {
     const r = Math.floor(Math.random() * 128);
     const g = Math.floor(Math.random() * 128);
@@ -31,7 +37,6 @@ function App() {
     return `rgb(${r}, ${g}, ${b})`;
   };
 
-  // let savedColors = [];
   const checkLocalStorage = () => {
     const savedColors = localStorage.getItem("savedColors");
     return savedColors ? JSON.parse(savedColors) : [];
@@ -53,18 +58,15 @@ function App() {
           randomColors.push(savedColor.color);
         }
       });
-      console.log("randomColors:", randomColors);
       setColors(randomColors);
     };
 
-    initializeColors(); // Call the function inside useEffect
+    initializeColors();
   }, []);
 
   const saveColor = (index, color) => {
-    // LocalStorage'daki mevcut kaydedilen renkleri al
     const savedColors = checkLocalStorage();
 
-    // Eğer kaydedilmiş renk sayısı 6 veya daha fazlaysa, kaydetme işlemini durdur.
     if (savedColors.length >= 6) {
       setNotification(`You can save a maximum of 6 colors.`);
       setTimeout(() => {
@@ -73,30 +75,22 @@ function App() {
       return;
     }
 
-    // Renk zaten kaydedilmiş mi kontrol et
     const colorObject = savedColors.find((savedColor) => savedColor.id === index + 1);
 
     if (colorObject) {
-      // Eğer renk zaten kaydedilmişse, güncelle
       colorObject.color = color;
     } else {
-      // Yeni bir renkse, kaydedilen renkler listesine ekle
       savedColors.push({
         id: index + 1,
         color: color,
       });
     }
 
-    // Güncellenen renkleri localStorage'a kaydet
     localStorage.setItem("savedColors", JSON.stringify(savedColors));
-
-    // Kullanıcıya bildirim göster ve UI'ı güncelle
     setNotification(`Color saved.`);
     setTimeout(() => {
       setNotification("");
     }, 3000);
-
-    // Ekranı güncellemek için durumu güncelle
     setColors([...colors]);
   };
 
@@ -125,7 +119,6 @@ function App() {
     }
     return false;
   }
-  const [forceUpdate] = useState(0);
 
   const removeSection = (index) => {
     if (colors.length === 1) {
@@ -136,28 +129,16 @@ function App() {
       return;
     }
 
-    // Yeni renkler listesini oluşturuyoruz
     const newColors = colors.filter((_, idx) => idx !== index);
 
-    // Kaydedilmiş renkleri de güncellemek gerekiyor
-    let savedColors = checkLocalStorage();
-    savedColors = savedColors.filter((color) => color.id !== index + 1);
-
-    // Güncellenen renkleri localStorage'a kaydediyoruz
-    localStorage.setItem("savedColors", JSON.stringify(savedColors));
-
-    setColors(newColors); // State güncelleniyor
-    setNotification(`Color removed.`);
-    setTimeout(() => {
-      setNotification("");
-    }, 3000);
+    setColors(newColors);
   };
 
   const createSimilarColor = (color) => {
     if (colors.length >= 8) {
-      setNotification(`Maximum 8 colors can be created.`); // Bildirim mesajını ayarla
+      setNotification(`Maximum 8 colors can be created.`);
       setTimeout(() => {
-        setNotification(""); // 3 saniye sonra bildirimi temizle
+        setNotification("");
       }, 3000);
       return;
     }
@@ -187,6 +168,31 @@ function App() {
       }
     );
   };
+
+  const handleColorChange = (color) => {
+    if (selectedColorIndex !== null) {
+      const newColors = [...colors];
+      newColors[selectedColorIndex] = color;
+      setColors(newColors);
+
+      // Eğer renk kaydedilmişse, localStorage'ı güncelle
+      const savedColors = checkLocalStorage();
+      const colorObject = savedColors.find((savedColor) => savedColor.id === selectedColorIndex + 1);
+      if (colorObject) {
+        colorObject.color = color;
+        localStorage.setItem("savedColors", JSON.stringify(savedColors));
+      }
+    }
+  };
+
+  const handlePickerPosition = (buttonElement) => {
+    const rect = buttonElement.getBoundingClientRect();
+    setPickerPosition({
+      top: rect.top - 210, // Butonun hemen üstünde olacak şekilde konumlandırın
+      left: rect.left + rect.width / 2 - 60, // Picker'ı ortalamak için
+    });
+  };
+
   return (
     <div className="App">
       <div className="header">
@@ -202,18 +208,12 @@ function App() {
           </li>
         </ul>
       </div>
-
-      {/* Section'ları bir container içine alıyoruz */}
       <div className="sections-container">
         {colors.map((color, indexim) => (
-          <div
-            key={`${color}-${indexim}-${forceUpdate}`} // key'i de forceUpdate'e bağlı yaparak render tetiklenmesini sağlayabiliriz
-            className="section"
-            style={{ backgroundColor: color }}
-          >
+          <div key={indexim} className="section" style={{ backgroundColor: color }}>
             <div className="parts">
               <div className="mybuttons">
-                {indexim < 6 && // Eğer 7. veya 8. renkse kilit simgelerini gösterme
+                {indexim < 6 &&
                   (checkColorIsSaved(indexim) ? (
                     <div className="buttons" onClick={() => removeSavedColor(indexim)}>
                       <FaUnlock />
@@ -223,6 +223,16 @@ function App() {
                       <FaLock />
                     </div>
                   ))}
+                <div
+                  className="buttons"
+                  onClick={(e) => {
+                    handlePickerPosition(e.currentTarget);
+                    setShowColorPicker(true);
+                    setSelectedColorIndex(indexim);
+                  }}
+                >
+                  <FaPalette /> {/* Renk seçici için ikon */}
+                </div>
                 <div className="buttons" onClick={() => createSimilarColor(checkColorIsSaved(indexim) ? changedColor : color)}>
                   <IoAddCircleSharp />
                 </div>
@@ -232,11 +242,11 @@ function App() {
               </div>
 
               <div className="colorcodes">
-                <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? changedColor : color)}>
-                  {checkColorIsSaved(indexim) ? changedColor : color}
+                <div className="text" onClick={() => copyToClipboard(colors[indexim])}>
+                  {colors[indexim]}
                 </div>
-                <div className="text" onClick={() => copyToClipboard(checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color))}>
-                  {checkColorIsSaved(indexim) ? hexToRgb(changedColor) : hexToRgb(color)}
+                <div className="text" onClick={() => copyToClipboard(hexToRgb(colors[indexim]))}>
+                  {hexToRgb(colors[indexim])}
                 </div>
               </div>
             </div>
@@ -245,6 +255,15 @@ function App() {
       </div>
 
       {notification && <div className={`notification ${notification ? "show" : ""}`}>{notification}</div>}
+
+      {showColorPicker && (
+        <div style={{ position: "absolute", zIndex: 2, top: pickerPosition.top, left: pickerPosition.left }}>
+          <HexColorPicker color={colors[selectedColorIndex]} onChange={handleColorChange} />
+          <button className="close-picker" onClick={() => setShowColorPicker(false)}>
+            <IoClose />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

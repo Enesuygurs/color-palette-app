@@ -48,10 +48,8 @@ body {
   cursor: copy;
   position: relative;
   z-index: 1;
-  padding: 4px;
+  padding: 4px 8px;
   width: max-content;
-  padding-right: 8px;
-  padding-left: 8px;
 }
 
 .text:hover {
@@ -209,4 +207,20 @@ body {
 }
 .navbarButton:hover {
   color: #2c2c2c;
+}
+.close-picker {
+  position: absolute;
+  top: -40px;
+  height: 26px;
+  right: 0;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 20px;
+  color: rgb(51, 51, 51);
+  border-radius: 7%;
+  background: #e7e7e7;
+}
+.close-picker:hover {
+  background: #dfdcdc;
+  border: 2px solid #dfdcdc;
 }
